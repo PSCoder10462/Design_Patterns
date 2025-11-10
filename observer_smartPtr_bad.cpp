@@ -1,6 +1,9 @@
+// this is bad way to use smart pointers
+// neither subject nor object should own one another
 #include <algorithm>
 #include <iostream>
 #include <list>
+#include <memory>
 #include <string>
 
 class ISubscriber {
@@ -14,15 +17,15 @@ class ISubscriber {
 class IPublisher {
   public:
     // method to subscribe
-    virtual void subscribe(ISubscriber *) = 0;
+    virtual void subscribe(const std::weak_ptr<ISubscriber> &) = 0;
     // method to unsubscribe
-    virtual void unsubscribe(ISubscriber *) = 0;
+    virtual void unsubscribe(const std::shared_ptr<ISubscriber> &) = 0;
     // method to notify all Subscribers about the change
     virtual void notifySubscribers() = 0;
     virtual ~IPublisher() = default;
 
   protected:
-    std::list<ISubscriber *> subs;
+    std::list<std::shared_ptr<ISubscriber>> subs;
 };
 
 class Subscriber : public ISubscriber {
@@ -39,11 +42,12 @@ class Subscriber : public ISubscriber {
 
 class Publisher : public IPublisher {
   public:
-    void subscribe(ISubscriber *sub) override {
-        subs.push_front(sub);
+    void subscribe(const std::weak_ptr<ISubscriber> &subscriber) override {
+        if (auto sub = subscriber.lock())
+            subs.push_front(sub);
     }
 
-    void unsubscribe(ISubscriber *sub) override {
+    void unsubscribe(const std::shared_ptr<ISubscriber> &sub) override {
         auto itr = std::find(subs.begin(), subs.end(), sub);
         if (itr != subs.end())
             subs.erase(itr);
@@ -56,26 +60,20 @@ class Publisher : public IPublisher {
 };
 
 int main() {
-    Publisher pub;
+    Publisher obs;
 
-    Subscriber *s1 = new Subscriber(1);
-    Subscriber *s2 = new Subscriber(2);
-    Subscriber *s3 = new Subscriber(3);
+    std::shared_ptr<Subscriber> s1 = std::make_shared<Subscriber>(1);
+    std::shared_ptr<Subscriber> s2 = std::make_shared<Subscriber>(2);
+    std::shared_ptr<Subscriber> s3 = std::make_shared<Subscriber>(3);
 
+    obs.subscribe(s1);
+    obs.subscribe(s2);
+    obs.subscribe(s3);
 
-    pub.subscribe(s1);
-    pub.subscribe(s2);
-    pub.subscribe(s3);
+    obs.notifySubscribers();
 
-    pub.notifySubscribers();
+    obs.unsubscribe(s2);
 
-    pub.unsubscribe(s2);
-
-    pub.notifySubscribers();
-
-
-    delete s1;
-    delete s2;
-    delete s3;
+    obs.notifySubscribers();
     return 0;
 }
