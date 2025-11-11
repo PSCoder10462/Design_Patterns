@@ -1,25 +1,21 @@
 #include <iostream>
 
 class Singleton {
-    public:
-        static Singleton& get_instance() {
-            static Singleton obj;
-            return obj;
-        }
+  public:
+    static Singleton &get_instance() {
+        static Singleton obj;
+        return obj;
+    }
 
-        const int& Data() {
-            return data;
-        }
+    const int &Data() { return data; }
 
-        void Data(const int &data) {
-            this->data = data;
-        }
+    void Data(const int &data) { this->data = data; }
 
-    private:
-        Singleton() = default;
-        Singleton(const Singleton&) = delete;
-        Singleton& operator=(const Singleton&) = delete;
-        int data = 5;
+  private:
+    Singleton() = default;
+    Singleton(const Singleton &) = delete;
+    Singleton &operator=(const Singleton &) = delete;
+    int data = 5;
 };
 
 int main() {
@@ -28,5 +24,3 @@ int main() {
     std::cout << Singleton::get_instance().Data() << std::endl;
     return 0;
 }
-
-
