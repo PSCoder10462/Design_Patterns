@@ -74,6 +74,8 @@ int main() {
     pub.notifySubscribers();
 
 
+    pub.unsubscribe(s1);
+    pub.unsubscribe(s3);
     delete s1;
     delete s2;
     delete s3;
