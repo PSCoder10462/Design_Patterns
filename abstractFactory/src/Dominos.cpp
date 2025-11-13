@@ -1,14 +1,10 @@
 #include "../include/Dominos.hpp"
 #include "../include/CommonPizzas.hpp"
+#include <memory>
 
-IPizza &Dominos::CreatePizza(const std::string &type) {
-    // not handling exceptions here !!!
-    IPizza *pizza = nullptr;
-
+std::unique_ptr<IPizza> Dominos::CreatePizza(const std::string &type) {
     if (type == "Cheese")
-        pizza = new CheesePizza(*m_dominosIngredientsFactory);
-    else if (type == "Pepperoni")
-        pizza = new PepperoniPizza(*m_dominosIngredientsFactory);
-
-    return *pizza;
+        return std::make_unique<CheesePizza>(m_dominosIngredientsFactory);
+    else /*if (type == "Pepperoni")*/
+        return std::make_unique<PepperoniPizza>(m_dominosIngredientsFactory);
 }

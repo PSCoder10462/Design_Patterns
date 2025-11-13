@@ -1,11 +1,12 @@
 #include "../include/PizzaHutIngredientsFactory.hpp"
+#include <memory>
 
-IToppings *PizzaHutIngredientsFactory::CreateToppings() {
+std::unique_ptr<IToppings>PizzaHutIngredientsFactory::CreateToppings() {
     // not handling exceptions
-    return new PizzaHutToppings();
+    return std::make_unique<PizzaHutToppings>();
 }
 
-ISauce *PizzaHutIngredientsFactory::CreateSauce() {
+std::unique_ptr<ISauce> PizzaHutIngredientsFactory::CreateSauce() {
     // not handling exceptions
-    return new PizzaHutSauce();
+    return std::make_unique<PizzaHutSauce>();
 }

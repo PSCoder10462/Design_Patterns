@@ -3,11 +3,11 @@
 
 int main() {
     Dominos dominosPizzaStore;
-    IPizza &dominosCheesePizza = dominosPizzaStore.OrderPizza("Cheese");
-    dominosCheesePizza.PrintPizza();
+    auto dominosCheesePizza = dominosPizzaStore.OrderPizza("Cheese");
+    dominosCheesePizza->PrintPizza();
 
     PizzaHut pizzaHutPizzaStore;
-    IPizza &pizzaHutPepperoniPizza = pizzaHutPizzaStore.OrderPizza("Pepperoni");
-    pizzaHutPepperoniPizza.PrintPizza();
+    auto pizzaHutPepperoniPizza = pizzaHutPizzaStore.OrderPizza("Pepperoni");
+    pizzaHutPepperoniPizza->PrintPizza();
     return 0;
 }

@@ -1,12 +1,10 @@
 #include "../include/PizzaHut.hpp"
 #include "../include/CommonPizzas.hpp"
 
-IPizza &PizzaHut::CreatePizza(const std::string &type) {
+std::unique_ptr<IPizza>PizzaHut::CreatePizza(const std::string &type) {
     // not handling exceptions here !!!
-    IPizza *pizza = nullptr;
     if (type == "Cheese")
-        pizza = new CheesePizza(*m_pizzaHutIngredientsFactory);
-    else if (type == "Pepperoni")
-        pizza = new PepperoniPizza(*m_pizzaHutIngredientsFactory);
-    return *pizza;
+        return std::make_unique<CheesePizza>(m_pizzaHutIngredientsFactory);
+    else /*if (type == "Pepperoni")*/
+        return std::make_unique<PepperoniPizza>(m_pizzaHutIngredientsFactory);
 }

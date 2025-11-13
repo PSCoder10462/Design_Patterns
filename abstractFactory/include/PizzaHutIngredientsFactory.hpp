@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IIngredientsFactory.hpp"
+#include "ISauce.hpp"
 #include "IToppings.hpp"
 
 class PizzaHutToppings : public IToppings {
@@ -15,6 +16,6 @@ class PizzaHutSauce : public ISauce {
 
 class PizzaHutIngredientsFactory : public IIngredientsFactory {
   public:
-    IToppings *CreateToppings() override;
-    ISauce *CreateSauce() override;
+      std::unique_ptr<IToppings>CreateToppings() override;
+      std::unique_ptr<ISauce>CreateSauce() override;
 };

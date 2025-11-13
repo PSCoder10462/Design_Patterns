@@ -1,11 +1,11 @@
 #include "../include/DominosIngredientsFactory.hpp"
 
-IToppings *DominosIngredientsFactory::CreateToppings() {
+std::unique_ptr<IToppings> DominosIngredientsFactory::CreateToppings() {
     // not handling exceptions
-    return new DominosToppings();
+    return std::make_unique<DominosToppings>();
 }
 
-ISauce *DominosIngredientsFactory::CreateSauce() {
+std::unique_ptr<ISauce> DominosIngredientsFactory::CreateSauce() {
     // not handling exceptions
-    return new DominosSauce();
+    return std::make_unique<DominosSauce>();
 }

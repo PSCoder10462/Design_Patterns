@@ -15,6 +15,6 @@ class DominosSauce : public ISauce {
 
 class DominosIngredientsFactory : public IIngredientsFactory {
   public:
-    IToppings *CreateToppings() override;
-    ISauce *CreateSauce() override;
+    std::unique_ptr<IToppings> CreateToppings() override;
+    std::unique_ptr<ISauce> CreateSauce() override;
 };

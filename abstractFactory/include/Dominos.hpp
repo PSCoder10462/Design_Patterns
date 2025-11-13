@@ -4,20 +4,16 @@
 #include "IIngredientsFactory.hpp"
 #include "IPizza.hpp"
 #include "IPizzaStore.hpp"
+#include <memory>
 
 class Dominos : public IPizzaStore {
   public:
-    IPizza &CreatePizza(const std::string &) override;
+    std::unique_ptr<IPizza> CreatePizza(const std::string &) override;
 
-    Dominos() { m_dominosIngredientsFactory = new DominosIngredientsFactory(); }
+    Dominos() : m_dominosIngredientsFactory(std::make_shared<DominosIngredientsFactory>()) {}
 
-    virtual ~Dominos() {
-        if (m_dominosIngredientsFactory) {
-            delete m_dominosIngredientsFactory;
-            m_dominosIngredientsFactory = nullptr;
-        }
-    }
+    virtual ~Dominos() override = default;
 
   protected:
-    IIngredientsFactory *m_dominosIngredientsFactory = nullptr;
+    std::shared_ptr<IIngredientsFactory> m_dominosIngredientsFactory;
 };

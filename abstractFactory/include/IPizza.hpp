@@ -1,28 +1,26 @@
 #pragma once
 #include "ISauce.hpp"
 #include "IToppings.hpp"
+#include <memory>
 #include <string>
 
 class IPizza {
   public:
+    // abstract factory
     virtual void Prepare() = 0;
     void Serve();
     const std::string &GetName() { return m_name; }
 
-    virtual ~IPizza() {
-        if (m_toppings)
-            delete m_toppings;
-        if (m_sauce)
-            delete m_sauce;
-    }
+    virtual ~IPizza() = default;
+    
 
     // setters
-    void Toppings(IToppings &toppings) { m_toppings = &toppings; }
-    void Sauce(ISauce &sauce) { m_sauce = &sauce; }
+    // void Toppings(IToppings &toppings) { m_toppings = toppings; }
+    // void Sauce(ISauce &sauce) { m_sauce = &sauce; }
 
     // getters
-    IToppings &Toppings() { return *m_toppings; }
-    ISauce &Sauce() { return *m_sauce; }
+    // IToppings &Toppings() { return *m_toppings; }
+    // ISauce &Sauce() { return *m_sauce; }
 
     void PrintPizza();
 
@@ -31,6 +29,6 @@ class IPizza {
 
     std::string m_name;
 
-    IToppings *m_toppings = nullptr;
-    ISauce *m_sauce = nullptr;
+    std::unique_ptr<IToppings> m_toppings;
+    std::unique_ptr<ISauce> m_sauce;
 };

@@ -1,12 +1,12 @@
 #include "../include/IPizzaStore.hpp"
 
-IPizza &IPizzaStore::OrderPizza(const std::string &type) {
+std::unique_ptr<IPizza>IPizzaStore::OrderPizza(const std::string &type) {
     // create pizza
-    IPizza &pizza = CreatePizza(type);
+    std::unique_ptr<IPizza> pizza = CreatePizza(type);
     
     // logic to prepare, server... 
-    pizza.Prepare();
-    pizza.Serve();
+    pizza->Prepare();
+    pizza->Serve();
 
     // complete the pizza order
     return pizza;
